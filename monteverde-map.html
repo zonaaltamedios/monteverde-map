@@ -1,54 +1,90 @@
-<div id="mapContainer" style="width: 100%; height: 100%;"></div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mapa Monteverde</title>
 
-<!-- Dropdown de categorías -->
-<select id="categoryDropdown" style="position: absolute; top: 10px; left: 10px; z-index: 10;">
-  <option value="all">Todas</option>
-  <option value="Night Tours">Night Tours</option>
-  <option value="Souvenirs">Souvenirs</option>
-  <option value="Hoteles">Hoteles</option>
-  <option value="Galería de Arte">Galerías de Arte</option>
-  <option value="Centro Comercial">Centro Comercial</option>
-  <option value="Supermercados">Supermercados</option>
-  <option value="Coffee Tours">Coffee Tours</option>
-  <option value="Tour Aventura">Tours de Aventura</option>
-  <option value="Restaurantes">Restaurantes</option>
-  <option value="Museos Naturales">Museos Naturales</option>
-  <option value="Farmacias">Farmacias</option>
-  <option value="Airbnb">Airbnb</option>
-  <option value="Gasolineras">Gasolineras</option>
-  <option value="Heladerías">Heladerías</option>
-  <option value="Bares">Bares</option>
-  <option value="Reserva Biológica">Reservas Biológicas</option>
-  <option value="Centros Médicos">Centros Médicos / Bienestar</option>
-  <option value="Cafeterías">Cafeterías</option>
-  <option value="Boutique Moda">Boutique / Moda</option>
-  <option value="Transportes">Transportes</option>
-</select>
-
-<!-- Mapbox GL JS CSS y JS -->
-<link href="https://api.mapbox.com/mapbox-gl-js/v2.20.1/mapbox-gl.css" rel="stylesheet">
-<script src="https://api.mapbox.com/mapbox-gl-js/v2.20.1/mapbox-gl.js"></script>
-
-<script>
-  // Inicializa Mapbox
-  mapboxgl.accessToken = 'pk.eyJ1Ijoiem9uYWFsdGFtYW1lZGlvcyIsImEiOiJjbGJiYjJhNXYxZGJlM3ZtcmtpemV6eWd5ZyJ9.GglTgJUFL-iwYqxQrdOAzA';
+  <!-- CSS de Mapbox -->
+  <link href="https://api.mapbox.com/mapbox-gl-js/v2.16.1/mapbox-gl.css" rel="stylesheet">
   
-  const map = new mapboxgl.Map({
-    container: 'mapContainer',
-    style: 'mapbox://styles/zonaaltamedios/Monteverde',
-    center: [-84.825, 9.615],
-    zoom: 13
-  });
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, sans-serif;
+    }
+    #map {
+      width: 100%;
+      height: 90vh; /* Alto visible */
+    }
+    #categoryFilter {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 10;
+      padding: 8px;
+      font-size: 14px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      background: white;
+    }
+  </style>
+</head>
+<body>
 
-  map.on('load', () => {
-    console.log('Mapa Monteverde cargado correctamente');
-  });
+  <!-- Menú de categorías -->
+  <select id="categoryFilter">
+    <option value="all">Todas</option>
+    <option value="Night Tours">Night Tours</option>
+    <option value="Souvenirs">Souvenirs</option>
+    <option value="Hoteles">Hoteles</option>
+    <option value="Galería de Arte">Galerías de Arte</option>
+    <option value="Centro Comercial">Centro Comercial</option>
+    <option value="Supermercados">Supermercados</option>
+    <option value="Coffee Tours">Coffee Tours</option>
+    <option value="Tour Aventura">Tours de Aventura</option>
+    <option value="Restaurantes">Restaurantes</option>
+    <option value="Museos Naturales">Museos Naturales</option>
+    <option value="Farmacias">Farmacias</option>
+    <option value="Airbnb">Airbnb</option>
+    <option value="Gasolineras">Gasolineras</option>
+    <option value="Heladerías">Heladerías</option>
+    <option value="Bares">Bares</option>
+    <option value="Reserva Biológica">Reservas Biológicas</option>
+    <option value="Centros Médicos">Centros Médicos / Bienestar</option>
+    <option value="Cafeterías">Cafeterías</option>
+    <option value="Boutique Moda">Boutique / Moda</option>
+    <option value="Transportes">Transportes</option>
+  </select>
 
-  // Filtrado por categoría (opcional)
-  const dropdown = document.getElementById('categoryDropdown');
-  dropdown.addEventListener('change', function() {
-    const category = this.value;
-    console.log('Seleccionada categoría:', category);
-    // Aquí puedes agregar la lógica para mostrar/ocultar layers según categoría
-  });
-</script>
+  <!-- Contenedor del mapa -->
+  <div id="map"></div>
+
+  <!-- JS de Mapbox -->
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.16.1/mapbox-gl.js"></script>
+
+  <script>
+    mapboxgl.accessToken = 'pk.eyJ1Ijoiem9uYWFsdGFtZWRpb3MiLCJhIjoiY2xiYmIyYTVvMWRiZTN2bXJvaWp6ZXp5ZyJ9.GglTgJUFL-iwYqxQrdOAzA';
+    
+    const map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/zonaaltamedios/cm30o7jli00ab01pfdz00ekw4',
+      center: [-84.80012, 10.30816], // Coordenadas de Monteverde
+      zoom: 12.7,
+      pitch: 45,
+      bearing: -17.6,
+      antialias: true
+    });
+
+    // Control de navegación (zoom y rotación)
+    map.addControl(new mapboxgl.NavigationControl());
+
+    // Esperar a que cargue el mapa
+    map.on('load', () => {
+      console.log('Mapa cargado correctamente ✅');
+    });
+  </script>
+</body>
+</html>
+
