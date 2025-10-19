@@ -64,10 +64,12 @@
   <!-- JS de Mapbox -->
   <script src="https://api.mapbox.com/mapbox-gl-js/v2.20.1/mapbox-gl.js"></script>
   <script>
+    // Token público
     mapboxgl.accessToken = 'pk.eyJ1Ijoiem9uYWFsdGFtYW1lZGlvcyIsImEiOiJjbGJiYjJhNXYxZGJlM3ZtcmtpemV6eWd5ZyJ9.GglTgJUFL-iwYqxQrdOAzA';
 
+    // Inicializar mapa
     const map = new mapboxgl.Map({
-      container: 'map', // debe coincidir con el div id="map"
+      container: 'map',
       style: 'mapbox://styles/zonaaltamedios/cm30o7jli00ab01pfdz00ekw4',
       center: [-84.80012, 10.30816],
       zoom: 12.7,
@@ -76,13 +78,21 @@
       antialias: true
     });
 
+    // Controles de navegación
     map.addControl(new mapboxgl.NavigationControl());
 
+    // Evento load
     map.on('load', () => {
       console.log('Mapa Monteverde cargado correctamente ✅');
     });
 
-    // Filtrado de categorías (puedes completar la lógica)
+    // Filtrado de categorías (solo ejemplo, aún no oculta capas)
     const dropdown = document.getElementById('categoryFilter');
     dropdown.addEventListener('change', function() {
       const category = this.value;
+      console.log('Categoría seleccionada:', category);
+      // Aquí puedes agregar lógica para filtrar tus layers según categoría
+    });
+  </script>
+</body>
+</html>
